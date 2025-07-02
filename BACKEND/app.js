@@ -7,8 +7,8 @@ import { nanoid } from 'nanoid';
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 
-app.get('/api/create', (req,res) => {
-    const{ url } = req.body;
+app.post('/api/create', (req,res) => {
+    const { url }  = req.body;
     console.log(url);
     res.send(nanoid(7));
 })
