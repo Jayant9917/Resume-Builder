@@ -3,8 +3,6 @@ import { LayoutTemplate, Menu, X } from 'lucide-react';
 import { landingPageStyles, } from '../assets/dummystyle'
 import { useState } from 'react'
 
-
-
 const LandingPage = () => {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
