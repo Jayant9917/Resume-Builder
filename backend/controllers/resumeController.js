@@ -88,7 +88,6 @@ export const createResume  = async (req, res) => {
 }
 
 //Get FUNCTION 
-
 export const getUserResumes = async (req, res) => {
     try{
         const resumes = await Resume.find({userId: req.user._id}).sort({

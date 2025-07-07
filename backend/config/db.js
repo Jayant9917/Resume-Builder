@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
 export const connectDB = async () => {
-    await mongoose.connect('mongodb+srv://admin:jayant132465rana@cluster0.cty7ree.mongodb.net/Resume-Builder')
+    await mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('connected to db'))
 }
