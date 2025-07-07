@@ -36,14 +36,66 @@ export const registerUser = async (req, res) => {
         res.status(201).json({
             _id: user._id,
             name: user.name,
-            emial: user.email,
+            email: user.email,
             token: generateToken(user._id)
-        }
-
-        )
-
+        })
     }
     catch(error){
-        res.status(400).json({message: error.message});
+        res.status(500).json({
+            message: "server error",
+            error: error.message
+        })
+    }
+}
+
+// LOGIN USER
+export const loginUser = async (req, res) => {
+    try{
+        const { email, password } = req.body; 
+        const user = await User.findOne({email}); 
+        if(!user){
+            return res.status(500).json({
+                message: "Invalid email and password"
+            })
+        }
+        // Compare the password with the hashed password 
+        const isMatch = await bcrypt.compare(password, user.password);
+        if(!isMatch){
+            return res.status(500).json({
+                message: "Invalid email and password"
+            })
+        }
+        res.status(201).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            token: generateToken(user._id)
+        })
+    }
+    catch(error){
+        res.status(500).json({
+            message: "server error",
+            error: error.message
+        })
+    }
+}
+
+// GETUSER PROFILE FUNCTION 
+
+export const getUserProfile = async (req, res) => {
+    try{
+        const user = await User.findById(req.user.id).select("-password");
+        if (!user){
+            return res.status(404).json({
+                message: "User not found"
+            })
+        }
+        res.json(user)
+    }
+    catch(error){
+        res.status(500).json({
+            message: "server error",
+            error: error.message
+        })
     }
 }
