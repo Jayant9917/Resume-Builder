@@ -32,6 +32,57 @@ const resumeSchema = new mongoose.Schema({
         website: String
     },
     // Work Experience Schema 
-    
+    workExperience: [
+        {
+            company: String,
+            role: String,
+            startDate: String,
+            endDate: String,
+            description: String
+        },
+    ],
+    education: [
+        {
+            degree: String,
+            institution: String,
+            startDate: String,
+            endDate: String
+        },
+    ],
+    skills: [
+        {
+            name: String,
+            progress: Number 
+        },
+    ],
+    projects: [
+        {
+            title: String,
+            description: String,
+            githubLink: String,
+            liveDemo: String
+        },
+    ],
+    certifications: [
+        {
+            title: String,
+            issuer: String,
+            year: String,
+        },
+    ],
 
-})
+    languages: [
+        {
+            namae : String,
+            progress: Number,
+
+        },
+    ],
+    intrestes: [String],
+},
+{
+    timestamps: { createdAt: "createdAt", updatedAt: "updatedAt"}
+}
+)
+
+export default mongoose.model('Resume', resumeSchema);
