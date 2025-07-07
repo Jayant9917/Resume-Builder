@@ -15,7 +15,7 @@ const resumeSchema = new mongoose.Schema({
     },
     template: {
         theme: String,
-        colorPalette: String
+        colorPalette: [String]
     },
     profileInfo: {
         profilePreviewUrl: String,
