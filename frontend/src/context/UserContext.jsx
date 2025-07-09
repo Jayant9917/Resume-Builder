@@ -1,4 +1,3 @@
-import React, { children } from "react";
 import { createContext, useState, useEffect } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import { API_PATHS } from "../utils/apiPaths";
@@ -45,7 +44,7 @@ const UserProvider = ({ children }) => {
 
     return (
         <UserContext.Provider value={{user, loading, updateUser, clearUser}}>
-            {Children}
+            {children}
         </UserContext.Provider>
     )
 }

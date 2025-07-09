@@ -25,7 +25,7 @@ axiosInstance.interceptors.request.use (
 )
 
 //RESPONSE INTERCEPTOR
-axios.interceptors.response.use((response) => {
+axiosInstance.interceptors.response.use((response) => {
     return response;
 }, (error) => {
     if(error.response){
@@ -43,3 +43,5 @@ axios.interceptors.response.use((response) => {
 })
 
 export default axiosInstance;
+
+
