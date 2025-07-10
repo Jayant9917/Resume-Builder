@@ -29,7 +29,7 @@ export const ProfileInfoCard = () => {
                         {user.name || ""}
                     </div>
                     <button className={cardStyles.profileLogoutButton}
-                    onClick={handleLogout}>
+                        onClick={handleLogout}>
                         Logout
                     </button>
                 </div>

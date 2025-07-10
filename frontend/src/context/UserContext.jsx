@@ -5,32 +5,32 @@ import { API_PATHS } from "../utils/apiPaths";
 export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
-    const [user, setUser ] = useState(null);
-    const [loading, setLoading ] = useState(true);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if(user) return
+        if (user) return
 
         const accessToken = localStorage.getItem("token")
-        if(!accessToken) {
+        if (!accessToken) {
             setLoading(false)
             return;
         }
         const fetchUser = async () => {
-        try{
-            const respone = await axiosInstance.get(API_PATHS.AUTH.GET_PROFILE) 
-            setUser(respone.data)
-        }
-        catch(error){
-            console.error("User not authenticated", error)
-            clearUser()
-        }
-        finally{
-            setLoading(false)
-        }
-    };
-    fetchUser();
-},[]);
+            try {
+                const respone = await axiosInstance.get(API_PATHS.AUTH.GET_PROFILE)
+                setUser(respone.data)
+            }
+            catch (error) {
+                console.error("User not authenticated", error)
+                clearUser()
+            }
+            finally {
+                setLoading(false)
+            }
+        };
+        fetchUser();
+    }, []);
 
     const updateUser = (userData) => {
         setUser(userData)
@@ -43,7 +43,7 @@ const UserProvider = ({ children }) => {
     }
 
     return (
-        <UserContext.Provider value={{user, loading, updateUser, clearUser}}>
+        <UserContext.Provider value={{ user, loading, updateUser, clearUser }}>
             {children}
         </UserContext.Provider>
     )
