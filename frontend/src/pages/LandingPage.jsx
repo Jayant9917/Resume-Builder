@@ -5,6 +5,9 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext.jsx';
 import { ProfileInfoCard } from '../components/Cards.jsx';
+import Modal from '../components/Modal.jsx';
+import Login from '../components/Login.jsx';
+
 
 const LandingPage = () => {
   const { user } = useContext(UserContext)
@@ -306,6 +309,17 @@ const LandingPage = () => {
           </p>
         </div>
       </footer>
+
+      {/* MODAL FOR LOGIN AND SIGNUP */}
+      <Modal isOpen={openAuthModal} onClose={() => { 
+        setOpenAuthModal(false)
+        setCurrentPage("login")
+        }} hideHeader>
+          <div>
+            {currentPage === "login" && <Login setCurrentPage={setCurrentPage}/>}
+            {currentPage === "signup" && <SignUp setCurrentPage={setCurrentPage}/>}
+          </div>
+      </Modal>
     </div>
   )
 }
