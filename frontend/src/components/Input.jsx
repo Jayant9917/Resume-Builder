@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { inputStyles } from '../assets/dummystyle'
-import { EyeOff } from 'lucide-react'
+import { EyeOff, Eye } from 'lucide-react'
 
 export const Input = ({ value, onChange, label, placeholder, type = "text" }) => {
 
@@ -9,7 +9,7 @@ export const Input = ({ value, onChange, label, placeholder, type = "text" }) =>
   const styles = inputStyles;
   return (
     <div className={inputStyles.wrapper}>
-      {label && <label class={inputStyles.label}>{label}</label>}
+      {label && <label className={inputStyles.label}>{label}</label>}
       <div className={inputStyles.inputContainer(isFocused)}>
         <input type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
           placeholder={placeholder}

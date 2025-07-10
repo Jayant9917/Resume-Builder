@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { API_PATHS } from '../utils/apiPaths'
 import axiosInstance from '../utils/axiosInstance'
 import { validateEmail } from '../utils/helper'
+import { Input } from './Input'
 
 
 import { authStyles as Styles } from '../assets/dummystyle'
@@ -17,7 +18,7 @@ const Login = ({ setCurrentPage }) => {
   const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (!validateEmail(email)) {
       setError('Please enter a valid email');
@@ -56,7 +57,7 @@ const Login = ({ setCurrentPage }) => {
         <Input value={email} onChange={({ target }) => setEmail(target.value)}
           label='Email'
           placeholder='Jay@gmail.com'
-          type='emial' />
+          type='email' />
 
         <Input value={password} onChange={({ target }) => setPassword(target.value)}
           label='Password'
