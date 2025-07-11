@@ -74,7 +74,7 @@ const Login = ({ setCurrentPage }) => {
             <button type='button' 
             className={Styles.switchButton} 
             onClick={() => setCurrentPage('signup')}>
-              SignUp
+              Sign Up
             </button>
           </p>
       </form>

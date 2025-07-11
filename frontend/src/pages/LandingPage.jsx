@@ -7,6 +7,7 @@ import { UserContext } from '../context/UserContext.jsx';
 import { ProfileInfoCard } from '../components/Cards.jsx';
 import Modal from '../components/Modal.jsx';
 import Login from '../components/Login.jsx';
+import SignUp from '../components/SignUp.jsx';
 
 
 const LandingPage = () => {
@@ -50,7 +51,7 @@ const LandingPage = () => {
           {/* DESKTOP NAVIGATION */}
           <div className='hidden md:flex items-center '>
             {user ? (
-              <ProfileInfoCard />
+              <ProfileInfoCard/>
             ) : (
               <button className={landingPageStyles.desktopAuthButton} onClick={() => setOpenAuthModal(true)}>
                 <div className={landingPageStyles.desktopAuthButtonOverlay}></div>
