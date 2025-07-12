@@ -73,12 +73,11 @@ const resumeSchema = new mongoose.Schema({
 
     languages: [
         {
-            namae : String,
+            name : String, // was 'namae'
             progress: Number,
-
         },
     ],
-    intrestes: [String],
+    interests: [String], // was 'intrestes'
 },
 {
     timestamps: { createdAt: "createdAt", updatedAt: "updatedAt"}
