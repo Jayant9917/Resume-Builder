@@ -1,5 +1,5 @@
 import React from 'react'
-import { authStyles as Styles } from '../assets/dummystyle'
+import { authStyles as Styles } from '../assets/dummystyle.js'
 import { useState, useContext } from 'react'
 import { UserContext } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom'

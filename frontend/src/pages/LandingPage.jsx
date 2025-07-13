@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { LayoutTemplate, Menu, X, ArrowRight, Zap, Download } from 'lucide-react';
-import { landingPageStyles, } from '../assets/dummystyle'
+import { landingPageStyles, } from '../assets/dummystyle.js'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext.jsx';

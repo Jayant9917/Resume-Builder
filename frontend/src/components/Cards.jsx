@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext.jsx'
-import { cardStyles } from '../assets/dummystyle'
+import { cardStyles } from '../assets/dummystyle.js'
 
 
 
@@ -28,7 +28,7 @@ export const ProfileInfoCard = () => {
                     <div className={cardStyles.profileName}>
                         {user.name || ""}
                     </div>
-                    <button className={cardStyles.profileLogoutButton}
+                    <button className={cardStyles.logoutButton}
                         onClick={handleLogout}>
                         Logout
                     </button>

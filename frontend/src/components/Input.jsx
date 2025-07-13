@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { inputStyles } from '../assets/dummystyle'
+import { inputStyles } from '../assets/dummystyle.js'
 import { EyeOff, Eye } from 'lucide-react'
 
 export const Input = ({ value, onChange, label, placeholder, type = "text" }) => {

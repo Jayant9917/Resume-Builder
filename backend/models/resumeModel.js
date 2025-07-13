@@ -84,4 +84,7 @@ const resumeSchema = new mongoose.Schema({
 }
 )
 
-export default mongoose.model('Resume', resumeSchema);
+// Check if model already exists before creating it
+const Resume = mongoose.models.Resume || mongoose.model('Resume', resumeSchema);
+
+export default Resume;

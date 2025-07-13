@@ -8,7 +8,7 @@ import { validateEmail } from '../utils/helper'
 import { Input } from './Input'
 
 
-import { authStyles as Styles } from '../assets/dummystyle'
+import { authStyles as Styles } from '../assets/dummystyle.js'
 
 const Login = ({ setCurrentPage }) => {
 
