@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { LayoutTemplate } from 'lucide-react'
-import { ProfileInfoCard } from './Cards.jsx'
+import { ProfileInfoCard } from '../components/Cards.jsx'
 
 
 const Navbar = () => {
