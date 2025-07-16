@@ -121,17 +121,17 @@ const Dashboard = () => {
   const handleDeleteResume = async () => {
     if(!resumeToDelete) return;
     try {
-      await axiosInstance.delete(API_PATHS.RESUME.DELETE(resumeToDelete))
-      toast.success('Resume Deleted Successfully')
-      fetchAllResumes()
+      await axiosInstance.delete(API_PATHS.RESUME.DELETE(resumeToDelete));
+      toast.success('Resume Deleted Successfully');
+      await fetchAllResumes();
+      
     }
     catch (error) {
-      console.error("Error Deleting the resume:", error)
-      toast.error('Failed to Deleting the resume')
+      toast.error('Failed to Deleting the resume');
     }
     finally{
-      setResumeToDelete(null)
-      showDeleteConfirm(false)
+      setResumeToDelete(null);
+      setShowDeleteConfirm(false);
     }
   }
 
@@ -205,14 +205,18 @@ const Dashboard = () => {
               <h3 className={styles.newResumeTitle}>Create New Resume</h3>
               <p className={styles.newResumeText}>Start building your Career</p>
             </div>
-            {allResumes.map((resume) => (
-              <ResumeSummaryCard key={resume.id} imageUrl={resume.thumbnailLink}
-              title={resume.title} createdAt={resume.createdAt} updatedAt={resume.updatedAt}
-              onSelect={() => navigate(`/resume/${resume.id}`)}
-              onDelete={() => setResumeToDelete(resume.id)}
-              completion={resume.completion || 0}
-              isPremium = {resume.isPremium}
-              isNew = {moment().diff(moment(resume.createdAt), 'days') < 7 }
+            {allResumes.map((resume, index) => (
+              <ResumeSummaryCard
+                key={resume.id || `resume-${index}`}
+                imageUrl={resume.thumbnailLink}
+                title={resume.title}
+                createdAt={resume.createdAt}
+                updatedAt={resume.updatedAt}
+                onSelect={() => navigate(`/resume/${resume.id}`)}
+                onDelete={() => handleDeleteClick(resume.id)}
+                completion={resume.completion || 0}
+                isPremium = {resume.isPremium}
+                isNew = {moment().diff(moment(resume.createdAt), 'days') < 7 }
 
               />
             ))}
@@ -238,9 +242,15 @@ const Dashboard = () => {
       </Modal>
 
       {/* DELETE MODAL */}
-      <Modal isOpen={showDeleteConfirm} onClose={() => setShowDeleteConfirm(false)} title="confirm Deletion"
-        showActionBtn actionBtnText="Delete" actionBtn className='bg-red-600 hover:bg-red-700'
-        onClick={handleDeleteResume}>
+      <Modal 
+      isOpen={showDeleteConfirm} 
+      onClose={() => setShowDeleteConfirm(false)} 
+      title="confirm Deletion"
+      showActionBtn
+      actionBtnText="Delete" 
+      actionBtn 
+      className='bg-red-600 hover:bg-red-700'
+        onActionClick={handleDeleteResume}>
           <div className='p-4'>
             <div className='flex flex-col items-center text-center'>
               <div className={styles.deleteIconWrapper}>
