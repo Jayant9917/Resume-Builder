@@ -5,6 +5,12 @@ import { dashboardStyles as styles } from '../assets/dummystyle.js'
 import axiosInstance from '../utils/axiosInstance.js'
 import { API_PATHS } from '../utils/apiPaths.js'
 import { LucideFilePlus } from 'lucide-react'
+import { ResumeSummaryCard } from '../components/Cards.jsx'
+import toast from 'react-hot-toast'
+import moment from 'moment'
+import Modal from '../components/Modal.jsx'
+import CreateResumeForm from '../components/CreateResumeForm.jsx'
+import { LucideTrash2 } from 'lucide-react'
 
 const Dashboard = () => {
 
@@ -112,6 +118,28 @@ const Dashboard = () => {
     fetchAllResumes();
   }, []);
 
+  const handleDeleteResume = async () => {
+    if(!resumeToDelete) return;
+    try {
+      await axiosInstance.delete(API_PATHS.RESUME.DELETE(resumeToDelete))
+      toast.success('Resume Deleted Successfully')
+      fetchAllResumes()
+    }
+    catch (error) {
+      console.error("Error Deleting the resume:", error)
+      toast.error('Failed to Deleting the resume')
+    }
+    finally{
+      setResumeToDelete(null)
+      showDeleteConfirm(false)
+    }
+  }
+
+  const handleDeleteClick = (id) => {
+    setResumeToDelete(id);
+    setShowDeleteConfirm(true);
+  }
+
 
   return (
     <DashboardLayout>
@@ -156,9 +184,77 @@ const Dashboard = () => {
               You haven't created ant resume yet. Start building Professional resume to land 
               your dream job.
             </p>
+
+            <button className={styles.createButton} onClick={() => setOpenCreateModal(true)}>
+              <div className={styles.createButtonOverlay}></div>
+              <span className={styles.createButtonContent}>
+                Create Your First Resume
+                <LucideFilePlus className='group-hover:translate-x-1 transition-transform' size={20} />
+              </span>
+            </button>
           </div>
         )}
+
+        {/* GRID VIEW */}
+        {!loading && allResumes.length > 0 && (
+          <div className={styles.grid}>
+            <div className={styles.newResumeCard} onClick={() => setOpenCreateModal(true)}>
+              <div className={styles.newResumeIcon}>
+                <LucideFilePlus size={32} className='text-white'/>
+              </div>
+              <h3 className={styles.newResumeTitle}>Create New Resume</h3>
+              <p className={styles.newResumeText}>Start building your Career</p>
+            </div>
+            {allResumes.map((resume) => (
+              <ResumeSummaryCard key={resume.id} imageUrl={resume.thumbnailLink}
+              title={resume.title} createdAt={resume.createdAt} updatedAt={resume.updatedAt}
+              onSelect={() => navigate(`/resume/${resume.id}`)}
+              onDelete={() => setResumeToDelete(resume.id)}
+              completion={resume.completion || 0}
+              isPremium = {resume.isPremium}
+              isNew = {moment().diff(moment(resume.createdAt), 'days') < 7 }
+
+              />
+            ))}
+            </div>
+        )}
       </div>
+
+      {/* CREATE MODAL */}
+      <Modal isOpen={openCreateModal} onClose={() => setOpenCreateModal(false)} hideHeader maxWidth='max-w-2xl'>
+        <div className='p-6'>
+          <div className={styles.modalHeader}>
+            <h3 className={styles.modalTitle}>Create New Resume</h3>
+
+            <button onClick={() => setOpenCreateModal(false)} className={styles.modalCloseButton}>
+              X
+            </button>
+          </div>
+          <CreateResumeForm onSuccess={() => {
+            setOpenCreateModal(false);
+            fetchAllResumes();
+          }}/>
+        </div>
+      </Modal>
+
+      {/* DELETE MODAL */}
+      <Modal isOpen={showDeleteConfirm} onClose={() => setShowDeleteConfirm(false)} title="confirm Deletion"
+        showActionBtn actionBtnText="Delete" actionBtn className='bg-red-600 hover:bg-red-700'
+        onClick={handleDeleteResume}>
+          <div className='p-4'>
+            <div className='flex flex-col items-center text-center'>
+              <div className={styles.deleteIconWrapper}>
+                <LucideTrash2 className='text-orange-600' size={24}/>
+              </div>
+
+              <h3 className={styles.deleteTitle}>Delete Resume</h3>
+              <p className={styles.deleteText}>
+                Are you sure you want to delete this resume This action cannot be undone.
+              </p>
+            </div>
+          </div>
+
+      </Modal>
     </DashboardLayout>
   )
 }
