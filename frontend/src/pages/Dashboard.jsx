@@ -207,13 +207,13 @@ const Dashboard = () => {
             </div>
             {allResumes.map((resume, index) => (
               <ResumeSummaryCard
-                key={resume.id || `resume-${index}`}
+                key={resume._id || `resume-${index}`}
                 imageUrl={resume.thumbnailLink}
                 title={resume.title}
                 createdAt={resume.createdAt}
                 updatedAt={resume.updatedAt}
-                onSelect={() => navigate(`/resume/${resume.id}`)}
-                onDelete={() => handleDeleteClick(resume.id)}
+                onSelect={() => navigate(`/resume/${resume._id}`)}
+                onDelete={() => handleDeleteClick(resume._id)}
                 completion={resume.completion || 0}
                 isPremium = {resume.isPremium}
                 isNew = {moment().diff(moment(resume.createdAt), 'days') < 7 }
