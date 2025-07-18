@@ -1,23 +1,23 @@
 import React, { useCallback, useRef, useState } from 'react'
 import DashboardLayout from './DashboardLayout.jsx'
 import { containerStyles } from '../assets/dummystyle.js'
-import TitleInput from './Inputs'
+import { TitleInput }from '../components/Input'
 import { useNavigate, useParams } from 'react-router-dom'
-
+import { useEffect } from 'react'
 
 //  RESIZE OBSERVER HOOK
 const useResizeObserver = () => {
-    const [size, setSize] = useState({width: 0, height: 0});
+    const [size, setSize] = useState({ width: 0, height: 0 });
     const ref = useCallback((node) => {
-        if(node) {
+        if (node) {
             const resizeObserver = new ResizeObserver((entries) => {
-                const {width, height} = entries[0].contentRect;
-                setSize({width, height});
+                const { width, height } = entries[0].contentRect;
+                setSize({ width, height });
             })
             resizeObserver.observe(node);
-        } 
-    },[])
-    return {...size, ref}
+        }
+    }, [])
+    return { ...size, ref }
 }
 
 const EditResume = () => {
@@ -189,7 +189,13 @@ const EditResume = () => {
         <DashboardLayout>
             <div className={containerStyles.main}>
                 <div className={containerStyles.header}>
-                    <TitleInput title={res} />
+                    <TitleInput title={resumeData.title}
+                        setTitle={(value) => setResumeData((prev) => ({
+                            ...prev,
+                            title
+                        }))
+                        }
+                    />
                 </div>
             </div>
         </DashboardLayout>
