@@ -1,15 +1,27 @@
 import React, { useCallback, useRef, useState } from 'react'
 import DashboardLayout from './DashboardLayout.jsx'
-import { buttonStyles, containerStyles } from '../assets/dummystyle.js'
+import { buttonStyles, containerStyles, iconStyles, statusStyles } from '../assets/dummystyle.js'
 import { TitleInput } from '../components/Input'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
-import { Download, Palette, Trash2 } from 'lucide-react'
+import { AlertCircle, Download, Palette, Trash2, ArrowLeft, Loader2, Save } from 'lucide-react'
 import axiosInstance from '../utils/axiosInstance.js'
 import { API_PATHS } from '../utils/apiPaths.js'
 import { toast } from 'react-hot-toast'
 import { fixTailwindColors } from '../utils/color.js'
 import html2pdf from 'html2pdf.js'
+import StepProgress from '../components/StepProgress'
+import {
+  ProfileInfoForm,
+  ContactInfoForm,
+  WorkExperienceForm,
+  EducationDetailsForm,
+  SkillsInfoForm,
+  ProjectDetailForm,
+  CertificationInfoForm,
+  AdditionalInfoForm
+} from './forms'
+
 
 //  RESIZE OBSERVER HOOK
 const useResizeObserver = () => {
@@ -701,7 +713,56 @@ const EditResume = () => {
                 </div>
 
                 {/* STEP PROCESS */}
+                <div className={containerStyles.grid}>
+                    <div className={containerStyles.formContainer}>
+                        <StepProgress progress={progress}/>
+                        {renderForm()}
+                        <div className='p-4 sm:p-6'>
+                            {errorMsg && (
+                                <div className={statusStyles.error}>
+                                    <AlertCircle size={16} />
+                                </div>
+                            )}
 
+                            <div className='flex flex-wrap itmes-center justify-end gap-3'>
+                                <button className={buttonStyles.back} onClick={goBack} disabled={isLoading}>
+                                    <ArrowLeft size={16} />
+                                    Back
+                                </button>
+
+                                <button className={buttonStyles.save} onClick={uploadResumeImages} disabled={isLoading}>
+                                    {isLoading ? <Loader2 size={16} className='animate-spin'/>
+                                    : <Save size={16}/>}
+                                    {isLoading ? "Saving..." : "Save & Exit"}
+                                </button>
+
+                                <button className={buttonStyles.next} onClick={validateAndNext} disabled={isLoading}>
+                                    {currentPage === "additionalInfo" && <Download size={16}/>}
+                                    {currentPage === "additionalInfo" ? "Preview & Download" : "Next"}
+                                    {currentPage === "additionalInfo" && <ArrowLeft size={16} className='rotate-180'/>}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='hidden lg:block'>
+                        <div className={containerStyles.previewContainer}>
+                            <div className='text-center mb-4'>
+                                <div className={statusStyles.completionBadge}>
+                                    <div className={iconStyles.pulseDot}></div>
+                                    <span className=''>Preview - {completionPercentage}% Completed</span>
+                                </div>
+                            </div>
+
+                            <div className="perview-container relative" ref={previewContainerRef}>
+                                <div className={containerStyles.previewInner}>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </DashboardLayout>
     )
