@@ -12,15 +12,18 @@ import { fixTailwindColors } from '../utils/color.js'
 import html2pdf from 'html2pdf.js'
 import StepProgress from '../components/StepProgress'
 import {
-  ProfileInfoForm,
-  ContactInfoForm,
-  WorkExperienceForm,
-  EducationDetailsForm,
-  SkillsInfoForm,
-  ProjectDetailForm,
-  CertificationInfoForm,
-  AdditionalInfoForm
+    ProfileInfoForm,
+    ContactInfoForm,
+    WorkExperienceForm,
+    EducationDetailsForm,
+    SkillsInfoForm,
+    ProjectDetailForm,
+    CertificationInfoForm,
+    AdditionalInfoForm
 } from './forms'
+import ThemeSelector from './ThemeSelector.jsx'
+import RenderResume from './RenderResume.jsx'
+import Modal from './Modal.jsx'
 
 
 //  RESIZE OBSERVER HOOK
@@ -575,7 +578,7 @@ const EditResume = () => {
         catch (err) {
             console.error("Error updating resume:", err)
             toast.error("Failed to update resume details")
-        } 
+        }
         finally {
             setIsLoading(false)
         }
@@ -600,87 +603,87 @@ const EditResume = () => {
 
     // DOWNLOAD FUNCTION.
     const downloadPDF = async () => {
-    const element = resumeDownloadRef.current;
-    if (!element) {
-      toast.error("Failed to generate PDF. Please try again.");
-      return;
-    }
-  
-    setIsDownloading(true);
-    setDownloadSuccess(false);
-    const toastId = toast.loading("Generating PDFâ€¦");
-  
-    const override = document.createElement("style");
-    override.id = "__pdf_color_override__";
-    override.textContent = `
+        const element = resumeDownloadRef.current;
+        if (!element) {
+            toast.error("Failed to generate PDF. Please try again.");
+            return;
+        }
+
+        setIsDownloading(true);
+        setDownloadSuccess(false);
+        const toastId = toast.loading("Generating PDFâ€¦");
+
+        const override = document.createElement("style");
+        override.id = "__pdf_color_override__";
+        override.textContent = `
       * {
         color: #000 !important;
         background-color: #fff !important;
         border-color: #000 !important;
       }
     `;
-    document.head.appendChild(override);
-  
-    // TYPE OF HOW IT WILL BE DOWNLOADED.
-    try {
-      await html2pdf()
-        .set({
-          margin:       0,
-          filename:     `${resumeData.title.replace(/[^a-z0-9]/gi, "_")}.pdf`,
-          image:        { type: "png", quality: 1.0 },
-          html2canvas:  {
-            scale:           2,
-            useCORS:         true,
-            backgroundColor: "#FFFFFF",
-            logging:         false,
-            windowWidth:     element.scrollWidth,
-          },
-          jsPDF:        {
-            unit:       "mm",
-            format:     "a4",
-            orientation:"portrait",
-          },
-          pagebreak: {
-            mode: ['avoid-all', 'css', 'legacy']
-          }
-        })
-        .from(element)
-        .save();  //WE SAVE THE RESUME HERE AND THEN WE DOWNLOAD IT...
-  
-      toast.success("PDF downloaded successfully!", { id: toastId });
-      setDownloadSuccess(true);
-      setTimeout(() => setDownloadSuccess(false), 3000);
-  
-    } catch (err) {
-      console.error("PDF error:", err);
-      toast.error(`Failed to generate PDF: ${err.message}`, { id: toastId });
-  
-    } finally {
-      document.getElementById("__pdf_color_override__")?.remove();
-      setIsDownloading(false);
+        document.head.appendChild(override);
+
+        // TYPE OF HOW IT WILL BE DOWNLOADED.
+        try {
+            await html2pdf()
+                .set({
+                    margin: 0,
+                    filename: `${resumeData.title.replace(/[^a-z0-9]/gi, "_")}.pdf`,
+                    image: { type: "png", quality: 1.0 },
+                    html2canvas: {
+                        scale: 2,
+                        useCORS: true,
+                        backgroundColor: "#FFFFFF",
+                        logging: false,
+                        windowWidth: element.scrollWidth,
+                    },
+                    jsPDF: {
+                        unit: "mm",
+                        format: "a4",
+                        orientation: "portrait",
+                    },
+                    pagebreak: {
+                        mode: ['avoid-all', 'css', 'legacy']
+                    }
+                })
+                .from(element)
+                .save();  //WE SAVE THE RESUME HERE AND THEN WE DOWNLOAD IT...
+
+            toast.success("PDF downloaded successfully!", { id: toastId });
+            setDownloadSuccess(true);
+            setTimeout(() => setDownloadSuccess(false), 3000);
+
+        } catch (err) {
+            console.error("PDF error:", err);
+            toast.error(`Failed to generate PDF: ${err.message}`, { id: toastId });
+
+        } finally {
+            document.getElementById("__pdf_color_override__")?.remove();
+            setIsDownloading(false);
+        }
+    };
+
+
+    // THEME SELECTOR FUNCTION
+    const updateTheme = (theme) => {
+        setResumeData(prev => ({
+            ...prev,
+            template: {
+                theme: theme,
+                colorPalette: []
+            }
+        }));
     }
-  };
 
+    useEffect(() => {
+        if (resumeId) {
+            fetchResumeDetailsById()
+        }
+    }, [resumeId])
 
-  // THEME SELECTOR FUNCTION
-  const updateTheme = (theme) => {
-    setResumeData(prev => ({
-      ...prev,
-      template: {
-        theme: theme,
-        colorPalette: []
-      }
-    }));
-  }
-
-  useEffect(() => {
-    if (resumeId) {
-      fetchResumeDetailsById()
-    }
-  }, [resumeId])
-
-  // SO ALL THIS FUNCTION WILL BE USED FOR THE EDIT RESUME 
-  // ALL THE CODE THAT I HAVE GIVEN IS ON GITHUB SO YOU CAN GET IT THROUGHT THE GIVEN LINK BELOW... 
+    // SO ALL THIS FUNCTION WILL BE USED FOR THE EDIT RESUME 
+    // ALL THE CODE THAT I HAVE GIVEN IS ON GITHUB SO YOU CAN GET IT THROUGHT THE GIVEN LINK BELOW... 
 
     return (
         <DashboardLayout>
@@ -715,7 +718,7 @@ const EditResume = () => {
                 {/* STEP PROCESS */}
                 <div className={containerStyles.grid}>
                     <div className={containerStyles.formContainer}>
-                        <StepProgress progress={progress}/>
+                        <StepProgress progress={progress} />
                         {renderForm()}
                         <div className='p-4 sm:p-6'>
                             {errorMsg && (
@@ -731,15 +734,15 @@ const EditResume = () => {
                                 </button>
 
                                 <button className={buttonStyles.save} onClick={uploadResumeImages} disabled={isLoading}>
-                                    {isLoading ? <Loader2 size={16} className='animate-spin'/>
-                                    : <Save size={16}/>}
+                                    {isLoading ? <Loader2 size={16} className='animate-spin' />
+                                        : <Save size={16} />}
                                     {isLoading ? "Saving..." : "Save & Exit"}
                                 </button>
 
                                 <button className={buttonStyles.next} onClick={validateAndNext} disabled={isLoading}>
-                                    {currentPage === "additionalInfo" && <Download size={16}/>}
+                                    {currentPage === "additionalInfo" && <Download size={16} />}
                                     {currentPage === "additionalInfo" ? "Preview & Download" : "Next"}
-                                    {currentPage === "additionalInfo" && <ArrowLeft size={16} className='rotate-180'/>}
+                                    {currentPage === "additionalInfo" && <ArrowLeft size={16} className='rotate-180' />}
                                 </button>
                             </div>
                         </div>
@@ -756,7 +759,10 @@ const EditResume = () => {
 
                             <div className="perview-container relative" ref={previewContainerRef}>
                                 <div className={containerStyles.previewInner}>
-
+                                    <RenderResume key={`preview-${resumeData?.template?.theme || ""}`}
+                                        resumeData={resumeData}
+                                        containerWidth={previewWidth}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -764,6 +770,25 @@ const EditResume = () => {
 
                 </div>
             </div>
+
+            {/* MODAL DATA HERE */}
+            <Modal isOpen={openThemeSelector} onClose={() => setOpenThemeSelector(false)}
+                title="Change Title">
+                    <div className={containerStyles.modalContent}>
+                        <ThemeSelector selectedTheme={resumeData?.template?.theme }
+                        setSelectedTheme={updateTheme} onClose={() => setOpenThemeSelector(false)}
+                        />
+                    </div>
+            </Modal>
+
+            <Modal isOpen={openPreviewModal} onClose={() => setOpenPreviewModal(false)}
+                title={resumeData.title}
+                showActionBtn
+                actionBtnText={isDownloading ? "Generating..."
+                    : downloadSuccess ? "Downloaded" : "Downlaoded PDF"
+                }>
+
+            </Modal>
         </DashboardLayout>
     )
 }

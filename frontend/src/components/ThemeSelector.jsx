@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { resumeTemplates } from '../utils/data'
 import Tabs from './Tabs'
 import { TemplateCard } from './Cards'
@@ -30,6 +30,14 @@ const ThemeSelector = ({ selectedTheme, setSelectedTheme, resumeData, onClose })
             setBaseWidth(resumeRef.current.offSetWidth)
         }
     }
+
+    useEffect(() => {
+        updateBaseWidth()
+        window.addEventListener('resize', updateBaseWidth)
+        return () => {
+            window.removeEventListener('resize', updateBaseWidth)
+        }
+    },[])
 
     return (
         <div className='max-w-7xl mx-auto px-4'>
