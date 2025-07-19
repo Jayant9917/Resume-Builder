@@ -130,3 +130,4 @@ export const DUMMY_RESUME_DATA = {
     ]
 };
 
+// IN THIS FILE YOU WILL HAVE DUMMY DATA ONLY
