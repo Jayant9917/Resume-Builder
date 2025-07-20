@@ -4,12 +4,12 @@ import { buttonStyles, containerStyles, iconStyles, statusStyles } from '../asse
 import { TitleInput } from '../components/Input'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
-import { AlertCircle, Download, Palette, Trash2, ArrowLeft, Loader2, Save } from 'lucide-react'
+import { AlertCircle, Download, Palette, Trash2, ArrowLeft, Loader2, Save, Check } from 'lucide-react'
 import axiosInstance from '../utils/axiosInstance.js'
 import { API_PATHS } from '../utils/apiPaths.js'
 import { toast } from 'react-hot-toast'
 import { fixTailwindColors } from '../utils/color.js'
-import html2pdf from 'html2pdf.js'
+import html2canvas from 'html2canvas';
 import StepProgress from '../components/StepProgress'
 import {
     ProfileInfoForm,
@@ -774,21 +774,64 @@ const EditResume = () => {
             {/* MODAL DATA HERE */}
             <Modal isOpen={openThemeSelector} onClose={() => setOpenThemeSelector(false)}
                 title="Change Title">
-                    <div className={containerStyles.modalContent}>
-                        <ThemeSelector selectedTheme={resumeData?.template?.theme }
+                <div className={containerStyles.modalContent}>
+                    <ThemeSelector selectedTheme={resumeData?.template?.theme}
                         setSelectedTheme={updateTheme} onClose={() => setOpenThemeSelector(false)}
-                        />
-                    </div>
+                    />
+                </div>
             </Modal>
 
             <Modal isOpen={openPreviewModal} onClose={() => setOpenPreviewModal(false)}
                 title={resumeData.title}
                 showActionBtn
                 actionBtnText={isDownloading ? "Generating..."
-                    : downloadSuccess ? "Downloaded" : "Downlaoded PDF"
-                }>
+                    : downloadSuccess ? "Downloaded" : "Downlaoded PDF"}
 
+                actionBtnIcon={
+                    isDownloading ? (
+                        <Loader2 size={16} className='animate-spin' />
+                    ) : (
+                        downloadSuccess ? (
+                            <Check size={16} className='text-white' />
+                        ) : (
+                            <Download size={16} />
+                        )
+                    )
+                }
+                onActionClick={downloadPDF}
+            >
+                <div className='relative'>
+                    <div className='text-center mb-4'>
+                        <div className={statusStyles.modalBadge}>
+                            <div className={iconStyles.pulseDot}></div>
+                            <span>Completion: {completionPercentage}%</span>
+                        </div>
+                    </div>
+                    <div className={containerStyles.pdfPreview}>
+                        <div ref={resumeDownloadRef} className='a4-wrapper'>
+                            <div className='w-full h-full'>
+                                <RenderResume key={`pdf-${resumeData?.template?.theme}`}
+                                templateId={resumeData?.template?.theme || ""}
+                                resumeData={resumeData}
+                                containerWidth={null}
+                                /> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </Modal>
+
+
+            {/* NOW THUMBNAIL ERROR FIX */}
+            <div style={{display: "none"}} ref={thumbnailRef}>
+                <div className={containerStyles.hiddenThumbnail}>
+                    <RenderResume key={`thumb-${resumeData?.template?.theme}`}
+                    templateId={resumeData?.template?.theme || ""}
+                    resumeData={resumeData}
+                    />
+                </div>
+            </div>
+
         </DashboardLayout>
     )
 }

@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext.jsx'
 import { cardStyles } from '../assets/dummystyle.js'
-import { Award, Clock, Edit, Trash2, TrendingUp, Zap } from 'lucide-react'
+import { Award, Check, Clock, Edit, Trash2, TrendingUp, Zap } from 'lucide-react'
 
 
 

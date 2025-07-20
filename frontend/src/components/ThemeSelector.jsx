@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { resumeTemplates } from '../utils/data'
+import { DUMMY_RESUME_DATA, resumeTemplates } from '../utils/data'
 import Tabs from './Tabs'
 import { TemplateCard } from './Cards'
 import RenderResume from './RenderResume'
+import { Check } from 'lucide-react'
 
 const TAB_DATA = [{ label: 'Templates' }]
 
@@ -22,7 +23,7 @@ const ThemeSelector = ({ selectedTheme, setSelectedTheme, resumeData, onClose })
 
     const handleThemeSelection = () => {
         setSelectedTheme(selectedTemplate.theme)
-        onclose()
+        onClose()
     }
 
     const updateBaseWidth = () => {
@@ -44,7 +45,7 @@ const ThemeSelector = ({ selectedTheme, setSelectedTheme, resumeData, onClose })
             {/* Header */}
             <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 
             p-4 sm:p-6 bg-gradient-to-r from-white to-violet-50 rounded-2xl border border-violet-100'>
-                <Tabs tabs={TAB_DATA} activeTab={tabValue} setActiveTab={setActiveTab} />
+                <Tabs tabs={TAB_DATA} activeTab={tabValue} setActiveTab={setTabValue} />
 
                 <button className='w-full sm:w-auto flex itmes-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-violet-600 
                 to-fuchsia-600 text-white font-black rounded-2xl hover:scale-105 transition-all 
